@@ -7,6 +7,19 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
 
+css = '''
+<style>
+    [data-testid="stSidebar"]{
+        min-width: 400px;
+        max-width: 800px;
+    }
+</style>
+'''
+st.markdown(css, unsafe_allow_html=True)
+
+
+
+
 class Config:
     def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs, file_path=None):
         self.title = title
