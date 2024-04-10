@@ -18,8 +18,6 @@ css = '''
 st.markdown(css, unsafe_allow_html=True)
 
 
-
-
 class Config:
     def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs, file_path=None):
         self.title = title
@@ -34,13 +32,25 @@ class Config:
 
 def main():
     st.title("Rashid lab - 4PL analyser")
-    # Instructions
     st.markdown("""
-        ### Instructions for Use
-        - Ensure you have an Excel file exported directly from the plate reader.
-        - The file should contain two sheets: 'Microplate End point' for the absorbance measurements and 'Layout' for the plate layout.
-        - Adjust the configuration settings below to match your experiment's setup.
-    """)
+        <style>
+        .blueBox {
+            background-color: #e7eff9;  /* Light blue background */
+            border-left: 6px solid #2196f3;  /* Blue border */
+            padding: 20px;  /* Some padding */
+            margin: 10px 0;  /* Some margin */
+        }
+        </style>
+        <div class="blueBox">
+            <h3>Instructions for Use</h3>
+            <ul>
+                <li>Ensure you have an Excel file exported directly from the plate reader.</li>
+                <li>The file should contain two sheets: 'Microplate End point' for the absorbance measurements and 'Layout' for the plate layout.</li>
+                <li>Adjust the configuration settings below to match your experiment's setup.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
     # User inputs for configuration
     title = st.text_input("Experiment Title", "Experiment")
     analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
