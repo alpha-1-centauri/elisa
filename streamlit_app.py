@@ -123,7 +123,7 @@ def process_data(experiment):
 
                 # Move back to the beginning of the BytesIO buffer
                 output.seek(0)
-                return outputs
+                return output
 
             @st.cache
             def get_excel_file_as_bytes(samples_df, std_curves, metadata_df):
