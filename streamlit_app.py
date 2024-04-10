@@ -60,6 +60,7 @@ def process_data(experiment):
                 data = load_data(experiment.file_path, 'Microplate End point', [0], package=pd)
             except ValueError as e:
                 st.error(f"Failed to load 'Microplate End point' data: {e}")
+                st.error("Please ensure that the 'Microplate End point' sheet is present in the uploaded file (default file from the plate reader).")
                 return  # Exit the function early if data loading fails
 
             # Attempt to load 'Layout' data
@@ -67,6 +68,7 @@ def process_data(experiment):
                 layout = load_data(experiment.file_path, 'Layout', [0], package=pd)
             except ValueError as e:
                 st.error(f"Failed to load 'Layout' data: {e}")
+                st.error("Please ensure that the 'Layout' sheet is present in the uploaded file.")
                 return  # Exit the function early if data loading fails
 
             # Calculate standard curve statistics
