@@ -25,7 +25,7 @@ def main():
     # User inputs for configuration
     title = st.text_input("Experiment Title", "SEN06B-ALB_ELISA")
     analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST"])
-    N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, value=2, step=1)
+    N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
     DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
     VOLUME = st.number_input("Volume (microlitres)", value=100)
     CELL_NO = st.number_input("Cells per well", value=55000)
