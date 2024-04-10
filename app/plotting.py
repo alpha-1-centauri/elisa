@@ -44,6 +44,7 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
 
 def heatmap_plot(layout,data):# Define x and y axis labels
     import plotly.express as px
+    import streamlit as st
     x_heat = list(range(1, 13))
     y_heat = list('ABCDEFGH')
 
@@ -59,4 +60,4 @@ def heatmap_plot(layout,data):# Define x and y axis labels
     # Update x-axis and y-axis properties
     fig.update_xaxes(side="top", tickmode="array", tickvals=x_heat, showgrid=False)
     fig.update_yaxes(showgrid=False)
-    fig.show()
+    st.plotly_chart(fig, use_container_width=True)
