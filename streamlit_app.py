@@ -25,7 +25,20 @@ class Config:
         self.file_path = None
 
 def main():
-    st.title("SEN06B-ALB_ELISA Streamlit App")
+    st.title("Rashid lab - 4 parameter logistic curve fitting for ELISA data analysis")
+    title = st.text_input("Experiment Title", "SEN06B-ALB_ELISA")
+    analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST"])
+    N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, value=2, step=1)
+    DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
+    VOLUME = st.number_input("Volume (microlitres)", value=100)
+    CELL_NO = st.number_input("Cells per well", value=55000)
+    DURATION = st.number_input("Duration (hours)", value=48)
+    
+    std_curve_concs = {
+        'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
+        'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
+        'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0]
+    }
 
     # File uploader
     uploaded_file = st.file_uploader("Choose a file", type=['xlsx'])
