@@ -1,4 +1,5 @@
 import streamlit as st
+import io
 import pandas as pd
 from pathlib import Path
 from app.load_data import load_data
@@ -90,10 +91,36 @@ def main():
         samples_df = samples_df.sort_values(by=['within_range', 'name', 'ug_1e6_24h'], ascending=[False, True, False])
 
         metadata_df = pd.DataFrame({'title': [experiment.title], 'analyte': [experiment.analyte], 'N_STD_CURVES': [experiment.N_STD_CURVES], 'DILUTION_FACTOR': [experiment.DILUTION_FACTOR], 'VOLUME': [experiment.VOLUME], 'CELL_NO': [experiment.CELL_NO], 'DURATION': [experiment.DURATION]})
-        with pd.ExcelWriter(f'output/{experiment.title} results.xlsx') as writer:
-            samples_df.to_excel(writer, sheet_name='Sample Data')
-            std_curves.to_excel(writer, sheet_name='Standard Curves')
-            metadata_df.to_excel(writer, sheet_name='Metadata',index=False)
+                
+        def create_excel_in_memory(samples_df, std_curves, metadata_df):
+            # Use a BytesIO buffer as a file-like object
+            output = io.BytesIO()
+
+            # Write dataframes to different sheets in the same Excel file
+            with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                samples_df.to_excel(writer, sheet_name='Sample Data')
+                std_curves.to_excel(writer, sheet_name='Standard Curves')
+                metadata_df.to_excel(writer, sheet_name='Metadata', index=False)
+
+            # Move back to the beginning of the BytesIO buffer
+            output.seek(0)
+            return output
+
+        @st.cache
+        def get_excel_file_as_bytes(samples_df, std_curves, metadata_df):
+            return create_excel_in_memory(samples_df, std_curves, metadata_df).getvalue()
+
+        # Assuming your DataFrames are ready to be written to the Excel file
+        # samples_df, std_curves, metadata_df = get_your_dataframes_here()
+
+        # Get the Excel file as bytes, cached by Streamlit
+        excel_bytes = get_excel_file_as_bytes(samples_df, std_curves, metadata_df)
+
+        # Create a download button for the Excel file
+        st.download_button(label="Download Excel File",
+                        data=excel_bytes,
+                        file_name="experiment_results.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
         return samples_df.sort_values(by='ug_1e6_24h')
 
