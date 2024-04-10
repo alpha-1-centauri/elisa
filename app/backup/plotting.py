@@ -3,7 +3,6 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
     from IPython.display import display, HTML
     from math import log10
     from app.calculations import logistic4_x
-    import streamlit as st
     title_text = {'ALB': 'Albumin concentration (ng/mL)', 'AAT': 'AAT concentration (ng/mL)', 'mAST':'mAST concentration (pg/mL)'}  
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=fit[0], y=fit[1], name='Fit', mode='lines'))
@@ -35,12 +34,11 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
     fig.add_hline(y=A, opacity=0.5, line=dict(color='red'))
     fig.add_hline(y=D, opacity=0.5, line=dict(color='red'))
 
-    # Display the plot in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Display limits of linearity in Streamlit
-    st.write(f'Lower limit of linearity: Abs: {limit_low:.2f}, Conc: {logistic4_x(limit_low, A, B, C, D):.2f}')
-    st.write(f'Upper limit of linearity: Abs: {limit_high:.2f}, Conc: {logistic4_x(limit_high, A, B, C, D):.2f}')
+    display(HTML(f'<b>Lower limit of linearity: </b> Abs: {limit_low:.2f}, Conc: {logistic4_x(limit_low, A, B, C, D):.2f}'))
+    display(HTML(f'<b>Upper limit of linearity: </b> Abs: {limit_high:.2f}, Conc: {logistic4_x(limit_high, A, B, C, D):.2f}'))
+    # Display the plot
+    fig.show()
+    fig.write_html(f"output/{title}.html")
 
 def heatmap_plot(layout,data):# Define x and y axis labels
     import plotly.express as px
