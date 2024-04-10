@@ -9,7 +9,7 @@ from app.plotting import ELISA_plot, heatmap_plot
 
 css = '''
 <style>
-    [data-testid="stSidebar"]{
+{
         min-width: 600px;
         max-width: 1200px;
     }
