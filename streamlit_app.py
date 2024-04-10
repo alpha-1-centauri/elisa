@@ -95,7 +95,7 @@ def main():
             std_curves.to_excel(writer, sheet_name='Standard Curves')
             metadata_df.to_excel(writer, sheet_name='Metadata',index=False)
 
-    return samples_df.sort_values(by='ug_1e6_24h')
+        return samples_df.sort_values(by='ug_1e6_24h')
 
 if __name__ == "__main__":
     main()
