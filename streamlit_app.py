@@ -34,7 +34,13 @@ class Config:
 
 def main():
     st.title("Rashid lab - 4PL analyser")
-    
+    # Instructions
+    st.markdown("""
+        ### Instructions for Use
+        - Ensure you have an Excel file exported directly from the plate reader.
+        - The file should contain two sheets: 'Microplate End point' for the absorbance measurements and 'Layout' for the plate layout.
+        - Adjust the configuration settings below to match your experiment's setup.
+    """)
     # User inputs for configuration
     title = st.text_input("Experiment Title", "Experiment")
     analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
