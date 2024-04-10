@@ -24,7 +24,7 @@ def main():
     
     # User inputs for configuration
     title = st.text_input("Experiment Title", "SEN06B-ALB_ELISA")
-    analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
+    analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA"])
     N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
     DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
     VOLUME = st.number_input("Volume (microlitres)", value=100)
@@ -35,7 +35,7 @@ def main():
         'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
         'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
         'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0],
-        'BCA assay': [1500,1000,750,500,250,125,25,0]
+        'BCA': [1500,1000,750,500,250,125,25,0]
     }
 
     # File uploader
