@@ -4,7 +4,7 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
     from math import log10
     from app.calculations import logistic4_x
     import streamlit as st
-    title_text = {'ALB': 'Albumin concentration (ng/mL)', 'AAT': 'AAT concentration (ng/mL)', 'mAST':'mAST concentration (pg/mL)'}  
+    title_text = {'ALB': 'Albumin concentration (ng/mL)', 'AAT': 'AAT concentration (ng/mL)', 'mAST':'mAST concentration (pg/mL)', 'BCA assay':'Protein concentration (ug/mL)'}  
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=fit[0], y=fit[1], name='Fit', mode='lines'))
 
