@@ -55,11 +55,19 @@ def main():
     
 def process_data(experiment):
         if experiment.file_path:
+        # Attempt to load 'Microplate End point' data
+            try:
+                data = load_data(experiment.file_path, 'Microplate End point', [0], package=pd)
+            except ValueError as e:
+                st.error(f"Failed to load 'Microplate End point' data: {e}")
+                return  # Exit the function early if data loading fails
 
-            # The rest of your processing code goes here
-            # For instance, load data:
-            data = load_data(experiment.file_path, 'Microplate End point', [0], package=pd)
-            layout = load_data(experiment.file_path, 'Layout', [0], package=pd)
+            # Attempt to load 'Layout' data
+            try:
+                layout = load_data(experiment.file_path, 'Layout', [0], package=pd)
+            except ValueError as e:
+                st.error(f"Failed to load 'Layout' data: {e}")
+                return  # Exit the function early if data loading fails
 
             # Calculate standard curve statistics
             std_curve_concs = pd.Series(experiment.std_curve_concs[experiment.analyte])
