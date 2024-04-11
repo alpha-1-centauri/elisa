@@ -19,7 +19,7 @@ css = '''
 st.markdown(css, unsafe_allow_html=True)
 
 class Config:
-    def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs, file_path=None):
+    def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations, file_path=None):
         self.title = title
         self.analyte = analyte
         self.N_STD_CURVES = N_STD_CURVES
@@ -27,7 +27,7 @@ class Config:
         self.VOLUME = VOLUME
         self.CELL_NO = CELL_NO
         self.DURATION = DURATION
-        self.std_curve_concs = std_curve_concs
+        self.std_curve_concentrations = std_curve_concentrations
         self.file_path = file_path
 
 def main():
@@ -65,7 +65,7 @@ def main():
         CELL_NO = st.number_input("Cells per well", value=55000)
         DURATION = st.number_input("Incubation duration (hours)", value=48)
     
-    std_curve_concs = {
+    std_curve_concentrations = {
         'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
         'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
         'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0],
@@ -80,10 +80,10 @@ def main():
     
     # Processing data if file is uploaded
     if uploaded_file is not None:
-        process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs)
+        process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations)
 
     
-def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs):
+def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations):
         # Read the uploaded file
         excel_io = io.BytesIO(uploaded_file.getvalue())
         excel_io.seek(0)
@@ -107,12 +107,13 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 return  # Exit the function early if data loading fails
 
             # Calculate standard curve statistics
-            # std_curve_concs = pd.Series(std_curve_concs[analyte]).astype(float, errors='ignore')
-            std_curve_concs = layout.iloc[:,0]
+            # std_curve_concentrations = pd.Series(std_curve_concentrations[analyte]).astype(float, errors='ignore')
+            std_curve_concentrations = layout.iloc[:,0]
             print(layout)
-            print(std_curve_concs)
+            
 
-            std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
+            std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concentrations)
+            print(std_curves)
             #force dtype to float
             #std_curves = std_curves.astype(float, errors='ignore')
     
@@ -133,7 +134,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             # Fit 4PL curve using least squares optimisation
             params = fit_least_square(residuals, p0, std_curves.Mean, std_curves.index)
             A, B, C, D = params
-            x_fit = list(range(0, int(max(std_curve_concs)))) #smooth curve
+            x_fit = list(range(0, int(max(std_curve_concentrations)))) #smooth curve
             y_fit = logistic4_y(x_fit, A, B, C, D)
 
             y_samples = data.iloc[:, N_STD_CURVES:].values.flatten()
