@@ -114,7 +114,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
             #force dtype to float
-            std_curves = std_curves.astype(float, errors='ignore')
+            #std_curves = std_curves.astype(float, errors='ignore')
     
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
