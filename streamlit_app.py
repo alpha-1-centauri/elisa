@@ -124,9 +124,9 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             # Calculate standard curve statistics
             std_curve_concs = pd.Series(std_curve_concs[analyte])
-            print(layout)
-            std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
 
+            std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
+            print(layout)
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
             std_curves['Mean'] = std_curves.mean(axis=1)
@@ -168,8 +168,8 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
             
-            print(std_curves)
-            print(f'4PL Parameters:\n{params}')
+            # print(std_curves)
+            # print(f'4PL Parameters:\n{params}')
             samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
 
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
