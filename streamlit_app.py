@@ -42,7 +42,7 @@ def main():
         <div class="blueBox">
             <h3>Instructions for Use</h3>
             <ul>
-                <li>Ensure you have an Excel file exported directly from the plate reader.</li>
+                <li>Ensure you have an Excel file exported directly from the plate reader FLUOstar OMEGA.</li>
                 <li>The file should contain at least two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
                 <li>Adjust the configuration settings below to match your experiment's setup.</li>
                 <li>Standards should be run in the first columns of the 'Microplate End point' sheet.</li>
