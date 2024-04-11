@@ -18,10 +18,12 @@ def fit_least_square(resid, p, y, x):
     return leastsq(resid, p, args=(y, x))[0]
 
 def logistic4_y(x, A, B, C, D):
+    print('log4y',x)
     x,A,B,C,D = float(x),float(A),float(B),float(C),float(D)
     return ((A-D) / (1.0 + ((x / C)**B))) + D
 
 def logistic4_x(y, A, B, C, D):
+    print('log4x',x)
     y, A, B, C, D = float(y), float(A), float(B), float(C), float(D)
     """Inverse 4PL logistic equation."""
     output = C * ((A-D)/(y-D) - 1)**(1/B)
