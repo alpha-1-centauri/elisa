@@ -16,4 +16,5 @@ def load_data_from_memory(excel_io, sheet_name, index_col=None,dtypes=None):
     # Load data from the specified sheet
     data = pd.read_excel(xls, sheet_name=sheet_name, index_col=index_col)
     data = data.loc['A':, :]
+    print(data)
     return data
