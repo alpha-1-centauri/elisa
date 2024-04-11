@@ -19,7 +19,7 @@ def fit_least_square(resid, p, y, x):
 
 def logistic4_y(x, A, B, C, D):
     """4PL logistic equation."""
-    print(x,A,B,C,D)
+    x = x.astype(float)
     x,A,B,C,D = np.array(x),float(A),float(B),float(C),float(D)
     return ((A-D) / (1.0 + ((x / C)**B))) + D
 
