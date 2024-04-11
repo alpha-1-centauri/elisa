@@ -53,10 +53,11 @@ def main():
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
-    col1, col2, col3 = st.columns(3)
 
-    for col in [col1, col2, col3]:
-        st.text_input("Experiment Title", "Experiment")
+
+
+    title=st.text_input("Experiment Title", "Experiment")
+    col1, col2, col3 = st.columns(3)
     with col1:
         analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
         DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
