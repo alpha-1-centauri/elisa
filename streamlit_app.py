@@ -182,7 +182,5 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                        file_name=f"Edited_{uploaded_file.name}",
                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-            return samples_df.sort_values(by='ug_1e6_24h')
-
 if __name__ == "__main__":
     main()
