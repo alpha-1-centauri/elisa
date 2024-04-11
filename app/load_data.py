@@ -1,3 +1,5 @@
+import pandas as pd
+import streamlit as st
 def load_data_from_memory(excel_io, sheet_name, index_col=None):
     try:
         # Read the Excel file from the BytesIO object
