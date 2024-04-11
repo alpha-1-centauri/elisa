@@ -129,13 +129,13 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curves['Acceptable (CV<20%)'] = std_curves['CV (%)'] < 10
 
             # Initial Parameter Guess
-            A, B = std_curves.average.min(), std_curves.average.min() / 2
-            C = (std_curves.average.max() + std_curves.average.min()) / 1.5
-            D = std_curves.average.max() * 1.5
+            A, B = std_curves.Mean.min(), std_curves.Mean.min() / 2
+            C = (std_curves.Mean.max() + std_curves.Mean.min()) / 1.5
+            D = std_curves.Mean.max() * 1.5
             p0 = [A, B, C, D]
 
             # Fit 4PL curve using least squares optimisation
-            params = fit_least_square(residuals, p0, std_curves.average, std_curves.index)
+            params = fit_least_square(residuals, p0, std_curves.Mean, std_curves.index)
             A, B, C, D = params
             x_fit = list(range(0, int(max(std_curve_concs)))) #smooth curve
             y_fit = logistic4_y(x_fit, A, B, C, D)
