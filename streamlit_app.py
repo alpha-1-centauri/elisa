@@ -16,7 +16,6 @@ css = '''
 '''
 st.markdown(css, unsafe_allow_html=True)
 
-
 class Config:
     def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs, file_path=None):
         self.title = title
