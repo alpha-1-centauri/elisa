@@ -125,6 +125,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             C = (std_curves.Mean.max() + std_curves.Mean.min()) / 1.5
             D = std_curves.Mean.max() * 1.5
             p0 = [A, B, C, D]
+            print(p0)
 
             # Fit 4PL curve using least squares optimisation
             params = fit_least_square(residuals, p0, std_curves.Mean, std_curves.index)

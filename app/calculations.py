@@ -15,7 +15,7 @@ def calculate_limits_of_linearity(A, D):
     return limit_low, limit_high
 
 def fit_least_square(resid, p, y, x):
-    return leastsq(resid, p, args=(y, x))[0]
+    return leastsq(resid, p, args=(y, x), maxfev=2000)[0]
 
 def logistic4_y(x, A, B, C, D):
     """4PL logistic equation."""
