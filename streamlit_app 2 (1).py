@@ -75,36 +75,19 @@ def main():
     
     # Processing data if file is uploaded
     if uploaded_file is not None:
-        process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs)
+        file_path = Path(uploaded_file.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        experiment = Config(title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs, file_path)
+        process_data(experiment)
 
-def load_data_from_memory(excel_io, sheet_name, index_col=None):
-    # Utilize pandas directly since we no longer pass the package as a parameter
-    try:
-        # Read the Excel file from the BytesIO object
-        xls = pd.ExcelFile(excel_io)
-    except ValueError as e:
-        st.error(f"Error reading the Excel file: {e}")
-        return None
-
-    # Check if the sheet_name exists in the Excel file
-    if sheet_name not in xls.sheet_names:
-        st.error(f"Worksheet named '{sheet_name}' not found. Available sheets are: {', '.join(xls.sheet_names)}")
-        return None
-
-    # Load data from the specified sheet
-    data = pd.read_excel(xls, sheet_name=sheet_name, index_col=index_col)
-    data = data.loc['A':, :]
-    return data
     
-def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs):
-        # Read the uploaded file
-        bytes_data = uploaded_file.getvalue()
-        excel_io = io.BytesIO(bytes_data)
-        writer = pd.ExcelWriter(excel_io, engine='openpyxl', mode='a')
-        if excel_io:
+def process_data(experiment):
+        if experiment.file_path:
         # Attempt to load 'Microplate End point' data
             try:
-                data = load_data_from_memory(excel_io, 'Microplate End point', [0], package=pd)
+                data = load_data(experiment.file_path, 'Microplate End point', [0], package=pd)
             except ValueError as e:
                 st.error(f"Failed to load 'Microplate End point' data: {e}")
                 st.error("Please ensure that the 'Microplate End point' sheet is present in the uploaded file (default file from the plate reader).")
@@ -112,17 +95,17 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             # Attempt to load 'Layout' data
             try:
-                layout = load_data_from_memory(excel_io, 'Layout', [0], package=pd)
+                layout = load_data(experiment.file_path, 'Layout', [0], package=pd)
             except ValueError as e:
                 st.error(f"Failed to load 'Layout' data: {e}")
                 st.error("Please ensure that the 'Layout' sheet is present in the uploaded file.")
                 return  # Exit the function early if data loading fails
 
             # Calculate standard curve statistics
-            std_curve_concs = pd.Series(std_curve_concs[analyte])
-            std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
+            std_curve_concs = pd.Series(experiment.std_curve_concs[experiment.analyte])
+            std_curves = data.iloc[:, :experiment.N_STD_CURVES].set_index(std_curve_concs)
             std_curves.index.name = 'Concentration'
-            std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
+            std_curves.columns=[f'Standard {n+1}'for n in range(experiment.N_STD_CURVES)]
             std_curves['average'] = std_curves.mean(axis=1)
             std_curves['std'] = std_curves.std(axis=1)
             std_curves['cv'] = std_curves['std'] / std_curves['average'] * 100
@@ -140,45 +123,63 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             x_fit = list(range(0, int(max(std_curve_concs)))) #smooth curve
             y_fit = logistic4_y(x_fit, A, B, C, D)
 
-            y_samples = data.iloc[:, N_STD_CURVES:].values.flatten()
-            sample_names = layout.iloc[:, N_STD_CURVES:].values.flatten()
+            y_samples = data.iloc[:, experiment.N_STD_CURVES:].values.flatten()
+            sample_names = layout.iloc[:, experiment.N_STD_CURVES:].values.flatten()
             samples_df = pd.DataFrame({'name': sample_names,
                                     'absorbance': y_samples}).dropna()
             samples_df['interpolated_conc'] = samples_df['absorbance'].apply(lambda x: logistic4_x(x, A, B, C, D))
             limit_low, limit_high = calculate_limits_of_linearity(A, D)
             
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
-                title=title,
+                title=experiment.title,
                 standards=std_curves,
                 fit=[x_fit,y_fit],
                 sample_names=samples_df.name,
                 limit_low=limit_low,
                 limit_high=limit_high,
-                analyte=analyte,
+                analyte=experiment.analyte,
                 four_PL_params=params)
 
             heatmap_plot(layout,data)
 
-            samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
+            samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], experiment.VOLUME, experiment.CELL_NO, experiment.DURATION, experiment.DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
             
             print(std_curves)
             print(f'4PL Parameters:\n{params}')
             samples_df = samples_df.sort_values(by=['within_range', 'name', 'ug_1e6_24h'], ascending=[False, True, False])
 
-            metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
+            metadata_df = pd.DataFrame({'title': [experiment.title], 'analyte': [experiment.analyte], 'N_STD_CURVES': [experiment.N_STD_CURVES], 'DILUTION_FACTOR': [experiment.DILUTION_FACTOR], 'VOLUME': [experiment.VOLUME], 'CELL_NO': [experiment.CELL_NO], 'DURATION': [experiment.DURATION]})
                     
-            with pd.ExcelWriter(excel_io, engine='openpyxl', mode='a') as writer:
-                data.to_excel(writer, sheet_name=f'{title} Data')
-                layout.to_excel(writer, sheet_name=f'{title} Layout')
+            def create_excel_in_memory(samples_df, std_curves, metadata_df):
+                # Use a BytesIO buffer as a file-like object
+                output = io.BytesIO()
 
-            excel_io.seek(0)
+                # Write dataframes to different sheets in the same Excel file
+                with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                    samples_df.to_excel(writer, sheet_name='Sample Data')
+                    std_curves.to_excel(writer, sheet_name='Standard Curves')
+                    metadata_df.to_excel(writer, sheet_name='Metadata', index=False)
 
-            # Provide the edited file for download
-            st.download_button(label="Download Edited Excel File",
-                       data=excel_io,
-                       file_name=f"Edited_{uploaded_file.name}",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                # Move back to the beginning of the BytesIO buffer
+                output.seek(0)
+                return output
+
+            @st.cache
+            def get_excel_file_as_bytes(samples_df, std_curves, metadata_df):
+                return create_excel_in_memory(samples_df, std_curves, metadata_df).getvalue()
+
+            # Assuming your DataFrames are ready to be written to the Excel file
+            # samples_df, std_curves, metadata_df = get_your_dataframes_here()
+
+            # Get the Excel file as bytes, cached by Streamlit
+            excel_bytes = get_excel_file_as_bytes(samples_df, std_curves, metadata_df)
+
+            # Create a download button for the Excel file
+            st.download_button(label="Download Excel File",
+                            data=excel_bytes,
+                            file_name="experiment_results.xlsx",
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
             return samples_df.sort_values(by='ug_1e6_24h')
 
