@@ -178,7 +178,8 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             st.download_button(label=":green[Download Excel file with results]",
                        data=excel_io,
                        file_name=f"Interpolated_{uploaded_file.name}",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       type="primary")
 
 if __name__ == "__main__":
     main()
