@@ -1,3 +1,6 @@
+import numpy as np
+from scipy.optimize import leastsq
+
 def calculate_limits_of_linearity(A, D):
     # Calculate limits of linear range (Sebaugh & McCray, 2003)
     #Sebaugh, J.L. and McCray, P.D. (2003), Defining the linear portion of a sigmoid-shaped curve: bend points. 
@@ -12,7 +15,6 @@ def calculate_limits_of_linearity(A, D):
     return limit_low, limit_high
 
 def fit_least_square(resid, p, y, x):
-    from scipy.optimize import leastsq
     return leastsq(resid, p, args=(y, x))[0]
 
 def logistic4_y(x, A, B, C, D):
@@ -20,8 +22,8 @@ def logistic4_y(x, A, B, C, D):
     return ((A-D) / (1.0 + ((x / C)**B))) + D
 
 def logistic4_x(y, A, B, C, D):
+    y, A, B, C, D = float(y), float(A), float(B), float(C), float(D)
     """Inverse 4PL logistic equation."""
-    import numpy as np
     output = C * ((A-D)/(y-D) - 1)**(1/B)
     output = np.array(output)
     output[np.iscomplex(output)] = np.nan
