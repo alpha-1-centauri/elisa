@@ -123,10 +123,10 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
-            std_curves['average'] = std_curves.mean(axis=1)
-            std_curves['std'] = std_curves.std(axis=1)
-            std_curves['cv'] = std_curves['std'] / std_curves['average'] * 100
-            std_curves['acceptable (cv<20%)'] = std_curves['cv'] < 10
+            std_curves['Mean'] = std_curves.mean(axis=1)
+            std_curves['Standard Deviation'] = std_curves.std(axis=1)
+            std_curves['CV (%)'] = std_curves['Standard Deviation'] / std_curves['average'] * 100
+            std_curves['Acceptable (CV<20%)'] = std_curves['CV (%)'] < 10
 
             # Initial Parameter Guess
             A, B = std_curves.average.min(), std_curves.average.min() / 2
@@ -164,7 +164,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             
             print(std_curves)
             print(f'4PL Parameters:\n{params}')
-            #samples_df = samples_df.sort_values(by=['name'], ascending=[False, True, False])
+            samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
 
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
