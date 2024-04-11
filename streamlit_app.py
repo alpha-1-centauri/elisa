@@ -2,7 +2,6 @@ import streamlit as st
 import io
 import pandas as pd
 from pathlib import Path
-from app.load_data import load_data
 from app.calculations import (calculate_limits_of_linearity, fit_least_square, residuals,
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
