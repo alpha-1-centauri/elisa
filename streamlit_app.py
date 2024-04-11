@@ -109,7 +109,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             # Calculate standard curve statistics
             # std_curve_concs = pd.Series(std_curve_concs[analyte]).astype(float, errors='ignore')
             std_curve_concs = layout.iloc[:,0].astype(float, errors='ignore')
-
+            print(layout)
             print(std_curve_concs)
 
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
