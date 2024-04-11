@@ -125,7 +125,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
             std_curves['Mean'] = std_curves.mean(axis=1)
             std_curves['Standard Deviation'] = std_curves.std(axis=1)
-            std_curves['CV (%)'] = std_curves['Standard Deviation'] / std_curves['average'] * 100
+            std_curves['CV (%)'] = std_curves['Standard Deviation'] / std_curves['Mean'] * 100
             std_curves['Acceptable (CV<20%)'] = std_curves['CV (%)'] < 10
 
             # Initial Parameter Guess
