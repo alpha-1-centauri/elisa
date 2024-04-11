@@ -159,7 +159,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             heatmap_plot(layout,data)
 
-            samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
+            #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
             
             print(std_curves)
@@ -169,8 +169,10 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
             with pd.ExcelWriter(excel_io, engine='openpyxl', mode='a') as writer:
-                data.to_excel(writer, sheet_name=f'{title} Data')
-                layout.to_excel(writer, sheet_name=f'{title} Layout')
+                samples_df.to_excel(writer, sheet_name=f'Sample concentrations')
+                std_curves.to_excel(writer, sheet_name=f'Standard curves')
+                metadata_df.to_excel(writer, sheet_name=f'Metadata')
+                
 
             excel_io.seek(0)
 
