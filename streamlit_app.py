@@ -60,7 +60,7 @@ def main():
     col1, col2, col3 = st.columns(3)
     with col1:
         analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
-        DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
+        #DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
     with col2:
         N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
         CELL_NO = st.number_input("Cells per well", value=55000)
@@ -175,7 +175,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             excel_io.seek(0)
 
             # Provide the edited file for download
-            st.download_button(label=":green[Download Excel file with results]",
+            st.download_button(label="**Download Excel file with results**",
                        data=excel_io,
                        file_name=f"Interpolated_{uploaded_file.name}",
                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
