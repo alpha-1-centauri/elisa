@@ -77,10 +77,7 @@ def main():
 
     # File uploader
     uploaded_file = st.file_uploader("Choose a file", type=['xlsx'])
-    
-    # Initialising experiment variable
-    experiment = None
-    
+       
     # Processing data if file is uploaded
     if uploaded_file is not None:
         process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations)
@@ -146,6 +143,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             samples_df['interpolated_conc'] = samples_df['absorbance'].apply(lambda x: logistic4_x(x, A, B, C, D))
             limit_low, limit_high = calculate_limits_of_linearity(A, D)
             
+            st.divider()
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
                 title=title,
                 standards=std_curves,
@@ -155,7 +153,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 limit_high=limit_high,
                 analyte=analyte,
                 four_PL_params=params)
-
+            st.divider()
             heatmap_plot(layout,data)
 
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
@@ -177,7 +175,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             excel_io.seek(0)
 
             # Provide the edited file for download
-            st.download_button(label="Download Excel file with results",
+            st.download_button(label=":green:[Download Excel file with results]",
                        data=excel_io,
                        file_name=f"Interpolated_{uploaded_file.name}",
                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
