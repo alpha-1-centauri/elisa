@@ -77,7 +77,6 @@ def main():
         process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs)
 
 def load_data_from_memory(excel_io, sheet_name, index_col=None):
-    # Utilize pandas directly since we no longer pass the package as a parameter
     try:
         # Read the Excel file from the BytesIO object
         xls = pd.ExcelFile(excel_io)
@@ -97,13 +96,14 @@ def load_data_from_memory(excel_io, sheet_name, index_col=None):
     
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concs):
         # Read the uploaded file
-        bytes_data = uploaded_file.getvalue()
-        excel_io = io.BytesIO(bytes_data)
-        writer = pd.ExcelWriter(excel_io, engine='openpyxl', mode='a')
+        excel_io = io.BytesIO(uploaded_file.getvalue())
+        excel_io.seek(0)
+        
         if excel_io:
         # Attempt to load 'Microplate End point' data
             try:
-                data = load_data_from_memory(excel_io, 'Microplate End point', [0])
+                data = load_data_from_memory(excel_io, 'Microplate End point', index_col=[0])
+                excel_io.seek(0)
             except ValueError as e:
                 st.error(f"Failed to load 'Microplate End point' data: {e}")
                 st.error("Please ensure that the 'Microplate End point' sheet is present in the uploaded file (default file from the plate reader).")
@@ -111,7 +111,8 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             # Attempt to load 'Layout' data
             try:
-                layout = load_data_from_memory(excel_io, 'Layout', [0])
+                layout = load_data_from_memory(excel_io, 'Layout', index_col=[0])
+                excel_io.seek(0)
             except ValueError as e:
                 st.error(f"Failed to load 'Layout' data: {e}")
                 st.error("Please ensure that the 'Layout' sheet is present in the uploaded file.")
