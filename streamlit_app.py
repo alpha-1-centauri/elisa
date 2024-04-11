@@ -181,9 +181,9 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             excel_io.seek(0)
 
             # Provide the edited file for download
-            st.download_button(label="Download Edited Excel File",
+            st.download_button(label="Download Excel file with results",
                        data=excel_io,
-                       file_name=f"Edited_{uploaded_file.name}",
+                       file_name=f"Interpolated_{uploaded_file.name}",
                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 if __name__ == "__main__":
