@@ -161,8 +161,8 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
-            with pd.ExcelWriter(excel_io, engine='openpyxl', mode='a') as writer:
-                samples_df.to_excel(writer, sheet_name=f'Sample concentrations', if_sheet_exists='replace')
+            with pd.ExcelWriter(excel_io, engine='openpyxl', mode='a', if_sheet_exists='new') as writer:
+                samples_df.to_excel(writer, sheet_name=f'Sample concentrations')
                 std_curves.to_excel(writer, sheet_name=f'Standard curves')
                 metadata_df.to_excel(writer, sheet_name=f'Metadata')
                 
