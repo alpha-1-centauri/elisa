@@ -103,7 +103,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
         if excel_io:
         # Attempt to load 'Microplate End point' data
             try:
-                data = load_data_from_memory(excel_io, 'Microplate End point', [0], package=pd)
+                data = load_data_from_memory(excel_io, 'Microplate End point', [0])
             except ValueError as e:
                 st.error(f"Failed to load 'Microplate End point' data: {e}")
                 st.error("Please ensure that the 'Microplate End point' sheet is present in the uploaded file (default file from the plate reader).")
@@ -111,7 +111,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             # Attempt to load 'Layout' data
             try:
-                layout = load_data_from_memory(excel_io, 'Layout', [0], package=pd)
+                layout = load_data_from_memory(excel_io, 'Layout', [0])
             except ValueError as e:
                 st.error(f"Failed to load 'Layout' data: {e}")
                 st.error("Please ensure that the 'Layout' sheet is present in the uploaded file.")
