@@ -164,7 +164,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             
             print(std_curves)
             print(f'4PL Parameters:\n{params}')
-            samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True, False])
+            #samples_df = samples_df.sort_values(by=['name'], ascending=[False, True, False])
 
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
