@@ -44,7 +44,7 @@ def main():
             <h3>Instructions for Use</h3>
             <ul>
                 <li>Ensure you have an Excel file exported directly from the plate reader.</li>
-                <li>The file should contain two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
+                <li>The file should contain at least two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
                 <li>Adjust the configuration settings below to match your experiment's setup.</li>
             </ul>
         </div>
@@ -124,7 +124,9 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             # Calculate standard curve statistics
             std_curve_concs = pd.Series(std_curve_concs[analyte])
+            print(layout)
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
+
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
             std_curves['Mean'] = std_curves.mean(axis=1)
