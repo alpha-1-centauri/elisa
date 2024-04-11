@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 import io
 import pandas as pd
 from pathlib import Path
@@ -90,16 +91,15 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
         if excel_io:
         # Attempt to load 'Microplate End point' data
             try:
-                data = load_data_from_memory(excel_io, 'Microplate End point', index_col=[0])
+                data = load_data_from_memory(excel_io, 'Microplate End point', index_col=[0], dtypes=float)
                 excel_io.seek(0)
             except ValueError as e:
                 st.error(f"Failed to load 'Microplate End point' data: {e}")
                 st.error("Please ensure that the 'Microplate End point' sheet is present in the uploaded file (default file from the plate reader).")
                 return  # Exit the function early if data loading fails
-
             # Attempt to load 'Layout' data
             try:
-                layout = load_data_from_memory(excel_io, 'Layout', index_col=[0])
+                layout = load_data_from_memory(excel_io, 'Layout', index_col=[0], dtypes=str)
                 excel_io.seek(0)
             except ValueError as e:
                 st.error(f"Failed to load 'Layout' data: {e}")
@@ -110,6 +110,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curve_concs = pd.Series(std_curve_concs[analyte])
             std_curve_concs = layout.iloc[:,0]
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concs)
+            std_curves = np.array(std_curves, dtype=float)
     
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]

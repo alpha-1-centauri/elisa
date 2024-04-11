@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-def load_data_from_memory(excel_io, sheet_name, index_col=None):
+def load_data_from_memory(excel_io, sheet_name, index_col=None,dtypes=None):
     try:
         # Read the Excel file from the BytesIO object
         xls = pd.ExcelFile(excel_io)
@@ -16,5 +16,5 @@ def load_data_from_memory(excel_io, sheet_name, index_col=None):
     # Load data from the specified sheet
     data = pd.read_excel(xls, sheet_name=sheet_name, index_col=index_col)
     data = data.loc['A':, :]
-    print(data)
+    data = data.astype(dtypes)
     return data
