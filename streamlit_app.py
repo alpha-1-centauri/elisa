@@ -53,16 +53,17 @@ def main():
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
-    col1, col2 = st.columns(2)
-
-    title = st.text_input("Experiment Title", "Experiment")
+    col1, col2, col3 = st.columns(3)
+    with st.container():
+        title = st.text_input("Experiment Title", "Experiment")
     with col1:
         analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
-        N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
         DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
     with col2:
-        VOLUME = st.number_input("Volume (microlitres)", value=100)
+        N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
         CELL_NO = st.number_input("Cells per well", value=55000)
+    with col3:
+        VOLUME = st.number_input("Volume (microlitres)", value=100)
         DURATION = st.number_input("Incubation duration (hours)", value=48)
     
     std_curve_concentrations = {
