@@ -44,20 +44,24 @@ def main():
             <h3>Instructions for Use</h3>
             <ul>
                 <li>Ensure you have an Excel file exported directly from the plate reader.</li>
-                <li>The file should contain two sheets: 'Microplate End point' for the absorbance measurements and 'Layout' for the plate layout.</li>
+                <li>The file should contain two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
                 <li>Adjust the configuration settings below to match your experiment's setup.</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
+    col1, col2 = st.columns(2)
+
     title = st.text_input("Experiment Title", "Experiment")
-    analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
-    N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
-    DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
-    VOLUME = st.number_input("Volume (microlitres)", value=100)
-    CELL_NO = st.number_input("Cells per well", value=55000)
-    DURATION = st.number_input("Duration (hours)", value=48)
+    with col1:
+        analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
+        N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
+        DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
+    with col2:
+        VOLUME = st.number_input("Volume (microlitres)", value=100)
+        CELL_NO = st.number_input("Cells per well", value=55000)
+        DURATION = st.number_input("Incubation duration (hours)", value=48)
     
     std_curve_concs = {
         'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
