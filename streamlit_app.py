@@ -110,7 +110,6 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             # std_curve_concentrations = pd.Series(std_curve_concentrations[analyte]).astype(float, errors='ignore')
             std_curve_concentrations = layout.iloc[:,0]
             print(layout)
-            
 
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concentrations)
             print(std_curves)
@@ -162,7 +161,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             # print(std_curves)
             # print(f'4PL Parameters:\n{params}')
             samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
-
+            print(samples_df)
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
             with pd.ExcelWriter(excel_io, engine='openpyxl', mode='a', if_sheet_exists='new') as writer:
