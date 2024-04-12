@@ -172,7 +172,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 </style>
                 """, unsafe_allow_html=True)
 
-                st.subheader("📉 Limits of Linearity", divider='blue')
+                st.subheader("📉 Limits of Linearity (Sebaugh & McCray, 2003)", divider='blue')
                 
                 col1, col2 = st.columns(2)
                 
