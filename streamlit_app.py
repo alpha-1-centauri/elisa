@@ -206,12 +206,9 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             col1, col2 = st.columns(2)
             with col1:
-                st.dataframe(samples_df[samples_df['Within Linear Range?']==True].map(tickbox_formatter))
+                st.dataframe(samples_df[samples_df['Within Linear Range?']==True].map(tickbox_formatter),height=1000)
             with col2:
-                st.dataframe(samples_df[samples_df['Within Linear Range?']==False].map(tickbox_formatter))
-
-
-            st.dataframe(samples_df,height=1000)
+                st.dataframe(samples_df[samples_df['Within Linear Range?']==False].map(tickbox_formatter),height=1000)
 
             st.subheader('📥 Download', divider='blue')
             
