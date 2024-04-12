@@ -203,7 +203,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             samples_df.columns = ['Sample Name', 'Absorbance', 'Interpolated Concentration', 'Within Linear Range?']
 
             st.header('📶 Results', divider='blue')
-            st.dataframe(samples_df,height=500)
+            st.dataframe(samples_df,height=1000)
 
             st.subheader('📥 Download', divider='blue')
             
