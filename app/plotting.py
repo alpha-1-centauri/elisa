@@ -38,21 +38,6 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
     # Display the plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-    # Display limits of linearity in Streamlit
-    
-    st.container(
-        st.markdown(f"""
-    ### 📉 Limits of Linearity
-
-    - **🔽 Lower Limit**:
-    - Absorbance: {limit_low:.2f}
-    - Concentration: {logistic4_x(limit_low, A, B, C, D):.2f}
-
-    - **🔼 Upper Limit**:
-    - Absorbance: {limit_high:.2f}
-    - Concentration: {logistic4_x(limit_high, A, B, C, D):.2f}
-    """)
-    , )
 
 
 

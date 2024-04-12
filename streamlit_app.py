@@ -154,6 +154,45 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 limit_high=limit_high,
                 analyte=analyte,
                 four_PL_params=params)
+            
+            with st.container():
+                # Use markdown with inline styles for the faint red box
+                st.markdown("""
+                <style>
+                .redbox {
+                    border: 1px solid #ffa4a4;
+                    background-color: #ffecec;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
+                st.markdown("### 📉 Limits of Linearity", unsafe_allow_html=True)
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown(f"""
+                    <div class="redbox">
+                    <b>🔽 Lower Limit</b><br>
+                    Absorbance: {limit_low:.2f}<br>
+                    Concentration: {logistic4_x(limit_low, A, B, C, D):.2f}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col2:
+                    st.markdown(f"""
+                    <div class="redbox">
+                    <b>🔼 Upper Limit</b><br>
+                    Absorbance: {limit_high:.2f}<br>
+                    Concentration: {logistic4_x(limit_high, A, B, C, D):.2f}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+
+
+
             st.divider()
             heatmap_plot(layout,data)
 
