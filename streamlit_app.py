@@ -17,6 +17,7 @@ css = '''
 </style>
 '''
 st.markdown(css, unsafe_allow_html=True)
+st.set_page_config(layout="wide")
 
 class Config:
     def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations, file_path=None):
@@ -53,7 +54,7 @@ def main():
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
-    st.header('Configuration', divider='blue')
+    st.header('⚙️ Configuration', divider='blue')
 
     title=st.text_input("Experiment Title", "Experiment")
     col1, col2, col3 = st.columns(3)
