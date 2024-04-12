@@ -3,5 +3,3 @@ plotly==5.20.0
 scipy==1.13.0
 ipython==8.14.0
 weasyprint==61.2
-pycairo
-pkg-config
