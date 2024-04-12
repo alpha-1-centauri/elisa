@@ -7,12 +7,9 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
-
-css = '''
+css='''
 <style>
-{
-        max-width: 100rem;
-    }
+    section.main > div {max-width:75rem}
 </style>
 '''
 st.markdown(css, unsafe_allow_html=True)
@@ -197,15 +194,17 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                     </div>
                     """, unsafe_allow_html=True)
 
-            st.header('Plate heatnap', divider='blue')
+            st.header('🔥 Plate heatmap', divider='blue')
             heatmap_plot(layout,data)
 
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
-            
-            # print(std_curves)
-            # print(f'4PL Parameters:\n{params}')
             samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
+
+            st.header('📶 Results', divider='blue')
+            st.dataframe(samples_df)
+
+            st.subheader('📥 Download', divider='blue')
             
             metadata_df = pd.DataFrame({'title': [title], 'analyte': [analyte], 'N_STD_CURVES': [N_STD_CURVES], 'DILUTION_FACTOR': [DILUTION_FACTOR], 'VOLUME': [VOLUME], 'CELL_NO': [CELL_NO], 'DURATION': [DURATION]})
                     
