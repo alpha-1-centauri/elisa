@@ -199,10 +199,11 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
-            samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
+            samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True]).map(tickbox_formatter)
+            samples_df.columns = ['Sample Name', 'Absorbance', 'Interpolated Concentration', 'Within Linear Range?']
 
             st.header('📶 Results', divider='blue')
-            st.dataframe(samples_df)
+            st.dataframe(samples_df,height=500)
 
             st.subheader('📥 Download', divider='blue')
             
