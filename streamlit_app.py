@@ -11,7 +11,7 @@ from app.load_data import load_data_from_memory
 css = '''
 <style>
 {
-        max-width: 75rem;
+        max-width: 100rem;
     }
 </style>
 '''
