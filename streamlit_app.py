@@ -28,7 +28,7 @@ class Config:
         self.file_path = file_path
 
 def main():
-    tab1,tab2,tab3 = st.tabs(['Four parameter logistic curve','Min max viability scaling','Label generation'])
+    tab1,tab2,tab3 = st.tabs(['Four parameter logistic curve','Label generation','Min max viability scaling'])
 
 
     with tab1:
@@ -80,11 +80,9 @@ def main():
         # Processing data if file is uploaded
         if uploaded_file is not None:
             process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations)
-    
-    with tab3:
+    with tab2:
         # Streamlit UI setup
         st.title('Label Generator')
-
         label_type = st.selectbox('Label Type', ['circle', 'rect'])
         label_text_input = st.text_area('Enter label texts separated by newline')
         skip_rows = st.number_input('Skip Rows', min_value=0, value=0)
