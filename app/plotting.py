@@ -9,7 +9,7 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
     fig.add_trace(go.Scatter(x=fit[0], y=fit[1], name='Fit', mode='lines'))
 
     for std in standards.columns:
-        if 'Standard 1' or 'Standard 2' in std:
+        if 'Standard 1' in std or 'Standard 2' in std:
             fig.add_trace(go.Scatter(x=standards[std].index, y=standards[std], name=std, mode='markers'))
 
     # Configure plot layout, axes, and background
