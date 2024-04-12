@@ -28,7 +28,7 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
                              marker_line_color='#AB63FA', marker_size=7))
 
     A,B,C,D = four_PL_params
-    if A > D:
+    if A < D:
         fig.update_yaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, showspikes=True, spikethickness=1,range=[A-0.2,D+0.2], showgrid=True, gridwidth=1, gridcolor='lightgray')
     else:
         fig.update_yaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, showspikes=True, spikethickness=1,range=[D-0.2,A+0.2], showgrid=True, gridwidth=1, gridcolor='lightgray')
