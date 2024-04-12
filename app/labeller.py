@@ -5,7 +5,7 @@ from typing import List
 from io import BytesIO
 import base64
 
-def labeller(label_type: str, label_txt_list: List[str], skiprows: int, output_file: str) -> None:
+def labeller(label_type: str, label_txt_list: List[str], skiprows: int):
     if label_type not in ['circle', 'rect']:
         raise ValueError("label_type must be either 'circle' or 'rect'")
     
