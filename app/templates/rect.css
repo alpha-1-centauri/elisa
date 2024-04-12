@@ -1,0 +1,29 @@
+@page { 
+    size: 215.9mm 279.4mm;
+    margin: 0mm;
+}
+
+body {
+    margin: 0mm;
+}
+
+.page-container {
+    padding-top: 6.2mm;
+    padding-left: 19.5mm;
+}
+
+.divbc {
+  float: left;
+  width: 32.512mm;
+  height: 12.7mm;
+/*  border: 1px solid gray;*/
+  margin-right: 2.7mm;
+  margin-bottom: 2.7mm;
+}
+
+.sample {
+  padding: 2mm;
+  line-height: 1.75mm;
+  font-size: 7px;
+  text-align: left;
+}

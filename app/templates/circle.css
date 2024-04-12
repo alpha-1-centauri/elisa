@@ -1,0 +1,35 @@
+@page { 
+    size: 215.9mm 279.4mm;
+    margin: 0mm;
+}
+
+body {
+    margin: 0mm;
+}
+
+.page-container {
+    padding-top: 15.1mm;
+    padding-left: 14.2mm;
+}
+
+.label-container {
+  float: left;
+  width: 9.5mm;
+  height: 9.5mm;
+  margin-right: 6.1mm;
+  margin-bottom: 6mm;
+  border: 1px solid lightgray; /* removed border */
+  border-radius: 50%;  /* Makes it circular */
+}
+
+.label-content {
+  line-height: 1.6mm;
+  padding-top: 1mm;
+  padding-left: 0.9mm;
+  padding-right: 0.9mm;
+  padding-bottom: 1mm;
+  font-size: 6.5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
