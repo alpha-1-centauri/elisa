@@ -112,8 +112,6 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             std_curves = data.iloc[:, :N_STD_CURVES].set_index(std_curve_concentrations)
             print(std_curves)
-            #force dtype to float
-            #std_curves = std_curves.astype(float, errors='ignore')
     
             std_curves.index.name = 'Concentration'
             std_curves.columns=[f'Standard {n+1}'for n in range(N_STD_CURVES)]
@@ -143,7 +141,11 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             limit_low, limit_high = calculate_limits_of_linearity(A, D)
             
             st.header('Standard curves', divider='blue')
-            st.dataframe(std_curves)
+            
+            def tickbox_formatter(x):
+                return '✅' if x else '❌'
+            
+            st.dataframe(std_curves.applymap(tickbox_formatter), height=200)
 
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
                 title=title,
