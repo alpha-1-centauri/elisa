@@ -7,6 +7,7 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
+from app.labeller import labeller
 css='''
 <style>
     section.main > div {max-width:75rem}
@@ -54,7 +55,6 @@ def main():
 
         # User inputs for configuration
         st.header('⚙️ Configuration', divider='blue')
-
         title=st.text_input("Experiment Title", "Experiment")
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -67,12 +67,12 @@ def main():
             VOLUME = st.number_input("Volume (microlitres)", value=100)
             DURATION = st.number_input("Incubation duration (hours)", value=48)
         
-        std_curve_concentrations = {
-            'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
-            'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
-            'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0],
-            'BCA assay': [1500,1000,750,500,250,125,25,0]
-        }
+        # std_curve_concentrations = {
+        #     'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
+        #     'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
+        #     'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0],
+        #     'BCA assay': [1500,1000,750,500,250,125,25,0]
+        # }
 
         # File uploader
         uploaded_file = st.file_uploader("Choose a file", type=['xlsx'])
@@ -80,6 +80,21 @@ def main():
         # Processing data if file is uploaded
         if uploaded_file is not None:
             process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations)
+    
+    with tab3:
+        # Streamlit UI setup
+        st.title('Label Generator')
+
+        label_type = st.selectbox('Label Type', ['circle', 'rect'])
+        label_text_input = st.text_area('Enter label texts separated by newline')
+        skip_rows = st.number_input('Skip Rows', min_value=0, value=0)
+        output_file_name = st.text_input('Output File Name', value='output')
+
+        if st.button('Generate Labels'):
+            label_txt_list = label_text_input.split('\n')
+            labeller(label_type, label_txt_list, skip_rows, output_file_name)
+            st.success('Labels generated successfully!')
+
 
         
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations):
