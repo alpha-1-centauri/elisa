@@ -8,13 +8,10 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
 
-st.set_page_config(layout="wide")
-
 css = '''
 <style>
 {
-        min-width: 600px;
-        max-width: 1200px;
+        max-width: 75rem;
     }
 </style>
 '''
