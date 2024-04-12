@@ -2,6 +2,8 @@ import streamlit as st
 from weasyprint import HTML
 from jinja2 import Environment, FileSystemLoader
 from typing import List
+from io import BytesIO
+import base64
 
 def labeller(label_type: str, label_txt_list: List[str], skiprows: int, output_file: str) -> None:
     if label_type not in ['circle', 'rect']:
@@ -47,4 +49,11 @@ def labeller(label_type: str, label_txt_list: List[str], skiprows: int, output_f
     records = [{'sample': adjust_for_label(label)} for label in labels]
     rendered_html = template.render(records=records)
     
-    HTML(string=rendered_html).write_pdf(f"labels/{output_file}.pdf", stylesheets=[f"app/templates/{label_type}.css"])
+    buffer = BytesIO()
+    # HTML(string=rendered_html).write_pdf(f"labels/{output_file}.pdf", stylesheets=[f"app/templates/{label_type}.css"])
+    HTML(string=rendered_html).write_pdf(buffer, stylesheets=[f"app/templates/{label_type}.css"])
+    buffer.seek(0)  # Move to the beginning of the buffer
+    
+    base64_pdf = base64.b64encode(buffer.read()).decode('utf-8')
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
+    return pdf_display

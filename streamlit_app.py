@@ -90,8 +90,9 @@ def main():
 
         if st.button('Generate Labels'):
             label_txt_list = label_text_input.split('\n')
-            labeller(label_type, label_txt_list, skip_rows, output_file_name)
-            st.success('Labels generated successfully!')
+            pdf_display = labeller(label_type, label_txt_list, skip_rows)
+            st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
         
