@@ -143,9 +143,13 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             st.header('Standard curves', divider='blue')
             
             def tickbox_formatter(x):
-                return '✅' if x else '❌'
+                if isinstance(x, bool):
+                    if x:
+                        return '✅'
+                    else:
+                        return '❌'
             
-            st.dataframe(std_curves.applymap(tickbox_formatter), height=200)
+            st.dataframe(std_curves.applymap(tickbox_formatter))
 
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
                 title=title,
