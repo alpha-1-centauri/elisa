@@ -28,7 +28,10 @@ def ELISA_plot(x_, y_, title, standards, fit, sample_names,limit_low,limit_high,
                              marker_line_color='#AB63FA', marker_size=7))
 
     A,B,C,D = four_PL_params
-    fig.update_yaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, showspikes=True, spikethickness=1,range=[A-0.2,D+0.2], showgrid=True, gridwidth=1, gridcolor='lightgray')
+    if A > D:
+        fig.update_yaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, showspikes=True, spikethickness=1,range=[A-0.2,D+0.2], showgrid=True, gridwidth=1, gridcolor='lightgray')
+    else:
+        fig.update_yaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, showspikes=True, spikethickness=1,range=[D-0.2,A+0.2], showgrid=True, gridwidth=1, gridcolor='lightgray')
     # fig.update_xaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, anchor='x2', showspikes=True, spikethickness=1,type='log',range=[log10(standards.index[-2]-3),log10(max(standards.index))+0.1], showgrid=True, gridwidth=1, gridcolor='lightgray')
     fig.update_xaxes(showline=True, linewidth=1, linecolor='gray', mirror=True, anchor='x2', showspikes=True, spikethickness=1,type='log',range=[0.1,log10(max(standards.index))+0.1], showgrid=True, gridwidth=1, gridcolor='lightgray')
     fig.add_vline(x=C, opacity=0.4, line=dict(color='green'))
