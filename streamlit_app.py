@@ -8,6 +8,8 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
 
+st.set_page_config(layout="wide")
+
 css = '''
 <style>
 {
@@ -17,7 +19,6 @@ css = '''
 </style>
 '''
 st.markdown(css, unsafe_allow_html=True)
-st.set_page_config(layout="wide")
 
 class Config:
     def __init__(self, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations, file_path=None):
