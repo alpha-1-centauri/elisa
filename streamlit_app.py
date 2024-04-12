@@ -148,6 +148,8 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                         return '✅'
                     else:
                         return '❌'
+                else:
+                    return x
             
             st.dataframe(std_curves.applymap(tickbox_formatter))
 
