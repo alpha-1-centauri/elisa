@@ -91,6 +91,7 @@ def main():
         if st.button('Generate Labels'):
             label_txt_list = label_text_input.split('\n')
             pdf_display = labeller(label_type, label_txt_list, skip_rows)
+            st.download_button(label="Download PDF", data=pdf_display, file_name="labels.pdf", mime="application/pdf")
             st.markdown(pdf_display, unsafe_allow_html=True)
 
 
