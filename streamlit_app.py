@@ -176,7 +176,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 </style>
                 """, unsafe_allow_html=True)
 
-                st.header("### 📉 Limits of Linearity", divider='blue')
+                st.subheader("📉 Limits of Linearity", divider='blue')
                 
                 col1, col2 = st.columns(2)
                 
