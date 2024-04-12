@@ -53,14 +53,13 @@ def main():
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
-
-
+    st.header('Configuration', divider='red')
 
     title=st.text_input("Experiment Title", "Experiment")
     col1, col2, col3 = st.columns(3)
     with col1:
         analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
-        #DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
+        DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
     with col2:
         N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
         CELL_NO = st.number_input("Cells per well", value=55000)
