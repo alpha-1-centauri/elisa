@@ -142,7 +142,9 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             samples_df['interpolated_conc'] = samples_df['absorbance'].apply(lambda x: logistic4_x(x, A, B, C, D))
             limit_low, limit_high = calculate_limits_of_linearity(A, D)
             
-            st.divider()
+            st.header('Standard curves', divider='red')
+            st.dataframe(std_curves)
+
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
                 title=title,
                 standards=std_curves,
