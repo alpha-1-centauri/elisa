@@ -8,7 +8,7 @@ def labeller(label_type: str, label_txt_list: List[str], skiprows: int, output_f
         raise ValueError("label_type must be either 'circle' or 'rect'")
     
     env = Environment(loader=FileSystemLoader('.'))
-    template = env.get_template('templates/template.html')
+    template = env.get_template('app/templates/template.html')
     
     row = 5 if label_type == 'rect' else 12
     skipped_labels = ['' for _ in range(skiprows * row)]
@@ -47,4 +47,4 @@ def labeller(label_type: str, label_txt_list: List[str], skiprows: int, output_f
     records = [{'sample': adjust_for_label(label)} for label in labels]
     rendered_html = template.render(records=records)
     
-    HTML(string=rendered_html).write_pdf(f"labels/{output_file}.pdf", stylesheets=[f"templates/{label_type}.css"])
+    HTML(string=rendered_html).write_pdf(f"labels/{output_file}.pdf", stylesheets=[f"app/templates/{label_type}.css"])
