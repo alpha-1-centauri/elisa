@@ -53,7 +53,7 @@ def main():
         """, unsafe_allow_html=True)
 
     # User inputs for configuration
-    st.header('Configuration', divider='red')
+    st.header('Configuration', divider='blue')
 
     title=st.text_input("Experiment Title", "Experiment")
     col1, col2, col3 = st.columns(3)
@@ -142,7 +142,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             samples_df['interpolated_conc'] = samples_df['absorbance'].apply(lambda x: logistic4_x(x, A, B, C, D))
             limit_low, limit_high = calculate_limits_of_linearity(A, D)
             
-            st.header('Standard curves', divider='red')
+            st.header('Standard curves', divider='blue')
             st.dataframe(std_curves)
 
             ELISA_plot(x_=samples_df.interpolated_conc,y_=samples_df.absorbance,
@@ -159,22 +159,22 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 # Use markdown with inline styles for the faint red box
                 st.markdown("""
                 <style>
-                .redbox {
-                    border: 1px solid #ffa4a4;
-                    background-color: #ffecec;
+                .bluebox {
+                    border: 1px solid #a4c8ff;  /* Light blue border */
+                    background-color: #ecf4ff;  /* Very light blue background */
                     border-radius: 5px;
                     padding: 10px;
-                }
+                }S
                 </style>
                 """, unsafe_allow_html=True)
 
-                st.markdown("### 📉 Limits of Linearity", unsafe_allow_html=True)
+                st.header("### 📉 Limits of Linearity", divider='blue')
                 
                 col1, col2 = st.columns(2)
                 
                 with col1:
                     st.markdown(f"""
-                    <div class="redbox">
+                    <div class="bluebox">
                     <b>🔽 Lower Limit</b><br>
                     Absorbance: {limit_low:.2f}<br>
                     Concentration: {logistic4_x(limit_low, A, B, C, D):.2f}
@@ -183,17 +183,14 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
                 with col2:
                     st.markdown(f"""
-                    <div class="redbox">
+                    <div class="bluebox">
                     <b>🔼 Upper Limit</b><br>
                     Absorbance: {limit_high:.2f}<br>
                     Concentration: {logistic4_x(limit_high, A, B, C, D):.2f}
                     </div>
                     """, unsafe_allow_html=True)
 
-
-
-
-            st.divider()
+            st.header('Plate heatnap', divider='blue')
             heatmap_plot(layout,data)
 
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
