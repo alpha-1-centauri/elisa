@@ -79,7 +79,11 @@ def main():
         
         # Processing data if file is uploaded
         if uploaded_file is not None:
+<<<<<<< HEAD
             process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION)
+=======
+            process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION, std_curve_concentrations)
+>>>>>>> 13cd0ffd5ab0dc88a00518b364fe5d2bba79118c
     with tab2:
         # Streamlit UI setup
         st.title('Label Generator')
@@ -94,9 +98,6 @@ def main():
             st.download_button(label="Download PDF", data=pdf_file, file_name="labels.pdf", mime="application/pdf")
 
 
-
-
-        
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION):
         # Read the uploaded file
         excel_io = io.BytesIO(uploaded_file.getvalue())
