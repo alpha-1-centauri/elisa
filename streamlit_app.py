@@ -222,8 +222,10 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
 
             col1, col2 = st.columns(2)
             with col1:
+                st.markdown(f"**Samples within linear range ({limit_low:.2f} - {limit_high:.2f})**")
                 st.dataframe(samples_df[samples_df['Within Linear Range?']==True].map(tickbox_formatter),height=1000)
             with col2:
+                st.markdown(f"**Samples outside linear range**")
                 st.dataframe(samples_df[samples_df['Within Linear Range?']==False].map(tickbox_formatter),height=1000)
 
             st.subheader('📥 Download', divider='blue')
