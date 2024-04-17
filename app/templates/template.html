@@ -1,0 +1,34 @@
+<div class="page-container">
+  {% for record in records %}
+      <div class='label-container'>
+          <div class='label-content'>{{ record.sample }}</div>
+      </div>
+  {% endfor %}
+</div>
+
+<!-- JavaScript for adjusting font size -->
+<script>
+  document.querySelectorAll('.label-content').forEach((element) => {
+    const parentWidth = element.parentElement.offsetWidth;
+    const lines = element.innerHTML.split('<br>');
+    
+    for (let i = 0; i < lines.length; i++) {
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = lines[i];
+      tempElement.style.fontSize = '7px';  // start with 7px
+      element.parentElement.appendChild(tempElement);
+      
+      while (tempElement.offsetWidth > parentWidth) {
+        const currentSize = parseFloat(window.getComputedStyle(tempElement, null).getPropertyValue('font-size'));
+        tempElement.style.fontSize = `${currentSize - 0.5}px`;
+      }
+      
+      const finalSize = parseFloat(window.getComputedStyle(tempElement, null).getPropertyValue('font-size'));
+      lines[i] = `<span style="font-size: ${finalSize}px">${lines[i]}</span>`;
+      element.parentElement.removeChild(tempElement);
+    }
+    
+    element.innerHTML = lines.join('<br>');
+  });
+</script>
+
