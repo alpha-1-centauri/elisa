@@ -90,8 +90,9 @@ def main():
 
         if st.button('Generate Labels'):
             label_txt_list = label_text_input.split('\n')
-            pdf_file = labeller(label_type, label_txt_list, skip_rows)
+            html, pdf_file = labeller(label_type, label_txt_list, skip_rows)
             st.download_button(label="Download PDF", data=pdf_file, file_name="labels.pdf", mime="application/pdf")
+            st.markdown(html, unsafe_allow_html=True)
 
 
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION):
@@ -238,7 +239,6 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                 std_curves.to_excel(writer, sheet_name=f'Standard curves')
                 metadata_df.to_excel(writer, sheet_name=f'Metadata')
                 
-
             excel_io.seek(0)
 
             # Provide the edited file for download

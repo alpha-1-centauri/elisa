@@ -48,8 +48,9 @@ def labeller(label_type: str, label_txt_list: List[str], skiprows: int):
     
     records = [{'sample': adjust_for_label(label)} for label in labels]
     rendered_html = template.render(records=records)
+
     
     buffer = BytesIO()
     HTML(string=rendered_html).write_pdf(buffer, stylesheets=[f"app/templates/{label_type}.css"])
     buffer.seek(0)  # Move to the beginning of the buffer
-    return buffer
+    return rendered_html, buffer
