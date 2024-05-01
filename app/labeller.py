@@ -1,3 +1,5 @@
+!pip install weasyprint
+
 import streamlit as st
 from weasyprint import HTML
 from jinja2 import Environment, FileSystemLoader
