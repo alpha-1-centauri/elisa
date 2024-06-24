@@ -7,7 +7,7 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
-from app.labeller import labeller
+#from app.labeller import labeller - currently not working due to issues in installing Weasyprint on streamlit
 css='''
 <style>
     section.main > div {max-width:75rem}
@@ -80,19 +80,23 @@ def main():
         # Processing data if file is uploaded
         if uploaded_file is not None:
             process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION)
-    with tab2:
-        # Streamlit UI setup
-        st.title('Label Generator')
-        label_type = st.selectbox('Label Type', ['circle', 'rect'])
-        label_text_input = st.text_area('Enter label texts separated by newline')
-        skip_rows = st.number_input('Skip Rows', min_value=0, value=0)
-        output_file_name = st.text_input('Output File Name', value='output')
+    
 
-        if st.button('Generate Labels'):
-            label_txt_list = label_text_input.split('\n')
-            html, pdf_file = labeller(label_type, label_txt_list, skip_rows)
-            st.download_button(label="Download PDF", data=pdf_file, file_name="labels.pdf", mime="application/pdf")
-            st.markdown(html, unsafe_allow_html=True)
+# deactivating the label generator for now due to issues in installing Weasyprint on streamlit
+    
+    # with tab2:
+    #     # Streamlit UI setup
+    #     st.title('Label Generator')
+    #     label_type = st.selectbox('Label Type', ['circle', 'rect'])
+    #     label_text_input = st.text_area('Enter label texts separated by newline')
+    #     skip_rows = st.number_input('Skip Rows', min_value=0, value=0)
+    #     output_file_name = st.text_input('Output File Name', value='output')
+
+    #     if st.button('Generate Labels'):
+    #         label_txt_list = label_text_input.split('\n')
+    #         html, pdf_file = labeller(label_type, label_txt_list, skip_rows)
+    #         st.download_button(label="Download PDF", data=pdf_file, file_name="labels.pdf", mime="application/pdf")
+    #         st.markdown(html, unsafe_allow_html=True)
 
 
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION):
