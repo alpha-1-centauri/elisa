@@ -64,8 +64,8 @@ def main():
             N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
             CELL_NO = st.number_input("Cells per well", value=55000)
         with col3:
-            VOLUME = st.number_input("Volume (microlitres)", value=100)
-            DURATION = st.number_input("Incubation duration (hours)", value=48)
+            VOLUME = st.number_input("Volume (microlitres) (currently not integrated into calculations)", value=100)
+            DURATION = st.number_input("Incubation duration (hours) (currently not integrated into calculations)", value=48)
         
         # std_curve_concentrations = {
         #     'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
