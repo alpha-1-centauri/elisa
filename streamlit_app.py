@@ -7,10 +7,10 @@ from app.calculations import (calculate_limits_of_linearity, fit_least_square, r
                               logistic4_y, logistic4_x, calculate_ug_per_million_24h)
 from app.plotting import ELISA_plot, heatmap_plot
 from app.load_data import load_data_from_memory
-#from app.labeller import labeller - currently not working due to issues in installing Weasyprint on streamlit
+
 css='''
 <style>
-    section.main > div {max-width:75rem}
+    section.main > div {max-width:90rem}
 </style>
 '''
 st.markdown(css, unsafe_allow_html=True)
@@ -28,76 +28,50 @@ class Config:
         self.file_path = file_path
 
 def main():
-    tab1,tab2,tab3 = st.tabs(['Four parameter logistic curve','Label generation','Min max viability scaling'])
+    #tab1 = st.tabs(['Four parameter logistic curve','Label generation','Min max viability scaling'])
 
-
-    with tab1:
-        st.title("Rashid lab - 4PL analyser")
-        st.markdown("""
-            <style>
-            .blueBox {
-                background-color: #e7eff9;  /* Light blue background */
-                border-left: 6px solid #2196f3;  /* Blue border */
-                padding: 20px;  /* Some padding */
-                margin: 10px 0;  /* Some margin */
-            }
-            </style>
-            <div class="blueBox">
-                <h3>Instructions for Use</h3>
-                <ul>
-                    <li>Ensure you have an Excel file exported directly from the plate reader FLUOstar OMEGA.</li>
-                    <li>The file should contain at least two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
-                    <li>Adjust the configuration settings below to match your experiment's setup.</li>
-                    <li>Standards should be run in the first columns of the 'Microplate End point' sheet.</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # User inputs for configuration
-        st.header('⚙️ Configuration', divider='blue')
-        title=st.text_input("Experiment Title", "Experiment")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
-            DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
-        with col2:
-            N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
-            CELL_NO = st.number_input("Cells per well (currently not integrated into calculations)", value=55000)
-        with col3:
-            VOLUME = st.number_input("Volume (microlitres) (currently not integrated into calculations)", value=100)
-            DURATION = st.number_input("Incubation duration (hours) (currently not integrated into calculations)", value=48)
-        
-        # std_curve_concentrations = {
-        #     'AAT': [1000, 200, 40, 8, 1.6, 0.32, 0.064, 0],
-        #     'ALB': [400, 200, 100, 50, 25, 12.5, 6.25, 0],
-        #     'mAST': [10000, 5000, 2500, 1250, 625, 312.5, 156.25, 0],
-        #     'BCA assay': [1500,1000,750,500,250,125,25,0]
-        # }
-
-        # File uploader
-        uploaded_file = st.file_uploader("Choose a file", type=['xlsx'])
-        
-        # Processing data if file is uploaded
-        if uploaded_file is not None:
-            process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION)
     
+    st.title("Rashid lab - 4PL analyser")
+    st.markdown("""
+        <style>
+        .blueBox {
+            background-color: #e7eff9;  /* Light blue background */
+            border-left: 6px solid #2196f3;  /* Blue border */
+            padding: 20px;  /* Some padding */
+            margin: 10px 0;  /* Some margin */
+        }
+        </style>
+        <div class="blueBox">
+            <h3>Instructions for Use</h3>
+            <ul>
+                <li>Ensure you have an Excel file exported directly from the plate reader FLUOstar OMEGA.</li>
+                <li>The file should contain at least two sheets: 'Microplate End point' for the absorbance measurements and an additonal sheet created by you displaying the plate layout. This sheet should be named 'Layout'.</li>
+                <li>Adjust the configuration settings below to match your experiment's setup.</li>
+                <li>Standards should be run in the first columns of the 'Microplate End point' sheet.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
-# deactivating the label generator for now due to issues in installing Weasyprint on streamlit
+    # User inputs for configuration
+    st.header('⚙️ Configuration', divider='blue')
+    title=st.text_input("Experiment Title", "Experiment")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        analyte = st.selectbox("Select Analyte", ["ALB", "AAT", "mAST", "BCA assay"])
+        DILUTION_FACTOR = st.number_input("Dilution Factor", value=50)
+    with col2:
+        N_STD_CURVES = st.number_input("Number of Standard Curves", min_value=1, max_value=2,value=2, step=1)
+        CELL_NO = st.number_input("Cells per well", value=55000)
+    with col3:
+        VOLUME = st.number_input("Volume (microlitres)", value=100)
+        DURATION = st.number_input("Incubation duration (hours)", value=48)
     
-    # with tab2:
-    #     # Streamlit UI setup
-    #     st.title('Label Generator')
-    #     label_type = st.selectbox('Label Type', ['circle', 'rect'])
-    #     label_text_input = st.text_area('Enter label texts separated by newline')
-    #     skip_rows = st.number_input('Skip Rows', min_value=0, value=0)
-    #     output_file_name = st.text_input('Output File Name', value='output')
-
-    #     if st.button('Generate Labels'):
-    #         label_txt_list = label_text_input.split('\n')
-    #         html, pdf_file = labeller(label_type, label_txt_list, skip_rows)
-    #         st.download_button(label="Download PDF", data=pdf_file, file_name="labels.pdf", mime="application/pdf")
-    #         st.markdown(html, unsafe_allow_html=True)
-
+    # File uploader
+    uploaded_file = st.file_uploader("Choose a file", type=['xlsx'])
+    
+    # Processing data if file is uploaded
+    if uploaded_file is not None:
+        process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION)
 
 def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_FACTOR, VOLUME, CELL_NO, DURATION):
         # Read the uploaded file
@@ -221,17 +195,24 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             #samples_df['ug_1e6_24h'] = calculate_ug_per_million_24h(samples_df['interpolated_conc'], VOLUME, CELL_NO, DURATION, DILUTION_FACTOR)
             samples_df['within_range'] = samples_df['absorbance'].apply(lambda x: limit_low < x < limit_high)
             samples_df = samples_df.sort_values(by=['within_range', 'name'], ascending=[False, True])
-            samples_df.columns = ['Sample Name', 'Absorbance', 'Interpolated Concentration', 'Within Linear Range?']
+            samples_df.columns = ['Sample', 'Absorbance', 'Interpolated conc. (ng/mL)', 'Within LR?']
+            samples_df['Dil. Factor (X)'] = DILUTION_FACTOR
+            samples_df['Adj. concentration (ng/mL)'] = samples_df['Interpolated conc. (ng/mL)'] * DILUTION_FACTOR
+            samples_df['Incubation vol. (uL)'] = VOLUME
+            samples_df['Analyte amt (ng)'] = samples_df['Adj. concentration (ng/mL)'] * VOLUME/1000
+            samples_df['Cells/well'] = CELL_NO
+            samples_df['ng/1e6 cells'] = samples_df['Analyte amt (ng)'] / (CELL_NO/1e6)
+            samples_df['Duration (h)'] = DURATION
+            samples_df['ug/1e6 cells/24h'] = samples_df['ng/1e6 cells'] / (DURATION/24)/1000
+    
 
             st.header('📶 Results', divider='blue')
 
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown(f"**Samples within linear range ({limit_low:.2f} - {limit_high:.2f})**")
-                st.dataframe(samples_df[samples_df['Within Linear Range?']==True].map(tickbox_formatter),height=1000)
-            with col2:
-                st.markdown(f"**Samples outside linear range**")
-                st.dataframe(samples_df[samples_df['Within Linear Range?']==False].map(tickbox_formatter),height=1000)
+            st.markdown(f"**Samples within linear range (LR) ({limit_low:.2f} - {limit_high:.2f})**")
+            st.dataframe(samples_df[samples_df['Within LR?']==True].map(tickbox_formatter),height=1000)
+   
+            st.markdown(f"**Samples outside linear range (LR)**")
+            st.dataframe(samples_df[samples_df['Within LR?']==False].map(tickbox_formatter),height=1000)
 
             st.subheader('📥 Download', divider='blue')
             
