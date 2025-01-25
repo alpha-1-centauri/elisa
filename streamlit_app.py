@@ -209,7 +209,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             st.header('📶 Results', divider='blue')
 
             st.markdown(f"**Samples within linear range (LR) ({limit_low:.2f} - {limit_high:.2f})**")
-            st.dataframe(samples_df[samples_df['Within LR?']==True].map(tickbox_formatter),height=1000)
+            st.dataframe(samples_df[samples_df['Within LR?']==True].map(tickbox_formatter),height=samples_df[samples_df['Within LR?']==True].shape[0]*35)
    
             st.markdown(f"**Samples outside linear range (LR)**")
             st.dataframe(samples_df[samples_df['Within LR?']==False].map(tickbox_formatter),height=1000)
@@ -231,7 +231,4 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                     data=excel_io,
                     file_name=f"Interpolated_{uploaded_file.name}",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    type="primary")
-
-if __name__ == "__main__":
-    main()
+                    type="pri
