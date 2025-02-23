@@ -233,4 +233,4 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                     data=excel_io,
                     file_name=f"Interpolated_{uploaded_file.name}",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                              )
+                    type="primary", icon=None, disabled=False, use_container_width=False)
