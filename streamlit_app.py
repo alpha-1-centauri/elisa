@@ -112,17 +112,16 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curves['Acceptable (CV<20%)'] = std_curves['CV (%)'] < 10
 
             # Initial Parameter Guess
-            A = std_curves.Mean.max()
-            B = 2.0  # Standard initial guess for slope
-            C = np.median(std_curves.index)  # True midpoint of response
-            D = std_curves.Mean.min()  # Use observed max unless saturation is incomplete
+            A = std_curves.Mean.min()
+            B = 1.0  # Standard initial guess for slope
+            C = (std_curves.Mean.max() + std_curves.Mean.min()) / 2  # True midpoint of response
+            D = std_curves.Mean.max()  # Use observed max unless saturation is incomplete
             p0 = [A, B, C, D]
             print(p0)
 
             # Fit 4PL curve using least squares optimisation
             params = fit_least_square(residuals, p0, std_curves.Mean, std_curves.index)
             A, B, C, D = params
-            print("Fitted params (A, B, C, D):", params)
             x_fit = list(range(0, int(max(std_curve_concentrations)))) #smooth curve
             y_fit = logistic4_y(x_fit, A, B, C, D)
 
@@ -233,4 +232,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                     data=excel_io,
                     file_name=f"Interpolated_{uploaded_file.name}",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    type="primary", icon=None, disabled=False, use_container_width=False)
+                    )
+
+if __name__ == "__main__":
+    main()
