@@ -122,6 +122,7 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             # Fit 4PL curve using least squares optimisation
             params = fit_least_square(residuals, p0, std_curves.Mean, std_curves.index)
             A, B, C, D = params
+            print("Fitted params (A, B, C, D):", params)
             x_fit = list(range(0, int(max(std_curve_concentrations)))) #smooth curve
             y_fit = logistic4_y(x_fit, A, B, C, D)
 
