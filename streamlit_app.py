@@ -112,10 +112,10 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
             std_curves['Acceptable (CV<20%)'] = std_curves['CV (%)'] < 10
 
             # Initial Parameter Guess
-            A = std_curves.Mean.min()
+            A = std_curves.Mean.max()
             B = 1.0  # Standard initial guess for slope
             C = (std_curves.Mean.max() + std_curves.Mean.min()) / 2  # True midpoint of response
-            D = std_curves.Mean.max()  # Use observed max unless saturation is incomplete
+            D = std_curves.Mean.min()  # Use observed max unless saturation is incomplete
             p0 = [A, B, C, D]
             print(p0)
 
