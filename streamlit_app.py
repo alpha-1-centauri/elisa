@@ -233,12 +233,6 @@ def process_and_download(uploaded_file, title, analyte, N_STD_CURVES, DILUTION_F
                     file_name=f"Interpolated_{uploaded_file.name}",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     )
-<<<<<<< HEAD
 
 if __name__ == "__main__":
     main()
-=======
-if __name__ == "__main__":
-    main()
-
->>>>>>> 223844a (Fix Streamlit app visibility issue and UI enhancements)
